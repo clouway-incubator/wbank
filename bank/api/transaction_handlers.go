@@ -2,9 +2,10 @@ package api
 
 import (
 	"encoding/json"
+	"net/http"
+
 	"github.com/gorilla/context"
 	"github.com/iliyanmotovski/bankv1/bank/domain"
-	"net/http"
 )
 
 func GetUserAccounts(accountStore domain.AccountStore) http.Handler {
@@ -28,13 +29,15 @@ func NewUserAccount(accountStore domain.AccountStore) http.Handler {
 		var account domain.Account
 		json.NewDecoder(r.Body).Decode(&account)
 
-		_, err := accountStore.InsertAccount(session.UserID, account)
+		accountID, err := accountStore.InsertAccount(session.UserID, account)
 		if err != nil {
 			errorResponse(w, http.StatusInternalServerError, "Create User Account Failed", "error", "unexpected_error", err.Error())
 			return
 		}
+		account.AccountID = accountID
 
 		w.WriteHeader(http.StatusCreated)
+		json.NewEncoder(w).Encode(account)
 	})
 }
 
