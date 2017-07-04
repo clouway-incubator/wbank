@@ -1,11 +1,12 @@
 package api
 
 import (
-	"github.com/gorilla/context"
-	"github.com/iliyanmotovski/bankv1/bank/domain"
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/gorilla/context"
+	"github.com/iliyanmotovski/bankv1/bank/domain"
 )
 
 // Provides cookie based security and updates the user with his most recent account information after

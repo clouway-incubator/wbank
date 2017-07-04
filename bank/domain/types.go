@@ -64,7 +64,7 @@ type AccountStore interface {
 	// Account in the persistence. Contains the deposit logic. It also inserts history in the persistence that
 	// states a deposit was made, the deposited sum, the time, the UserID and AccountID.
 	// Returns an error if any.
-	Deposit(account Account) error
+	Deposit(account Account) (*Account, error)
 
 	// Withdraw takes an Account and withdraws the incoming money amount from the request from the corresponding
 	// Account. Contains the withdrawal logic. It also inserts history in the persistence that states a withdraw

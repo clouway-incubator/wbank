@@ -1,12 +1,13 @@
 package persistence
 
 import (
+	"math/rand"
+	"time"
+
 	"github.com/iliyanmotovski/bankv1/bank/domain"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"math/rand"
-	"time"
 )
 
 type mongoSessionStore struct {
@@ -140,7 +141,7 @@ func (se *mongoSessionStore) Withdraw(a domain.Account) error {
 	return nil
 }
 
-func (se *mongoSessionStore) Deposit(a domain.Account) error {
+func (se *mongoSessionStore) Deposit(a domain.Account) (*domain.Account, error) {
 	session := se.Session.Clone()
 	defer session.Close()
 
@@ -148,22 +149,22 @@ func (se *mongoSessionStore) Deposit(a domain.Account) error {
 
 	err := session.DB(se.DBName).C("accounts").Find(bson.M{"userid": a.UserID, "accountid": a.AccountID}).One(&current)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	current.Amount = current.Amount + a.Amount
 
 	err = session.DB(se.DBName).C("accounts").Update(bson.M{"accountid": current.AccountID}, bson.M{"$set": bson.M{"amount": current.Amount}})
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	err = session.DB(se.DBName).C("history").Insert(&domain.History{AccountID: current.AccountID, UserID: a.UserID, TransactionType: "deposit", Currency: current.Currency, Amount: a.Amount, Date: time.Now().Local()})
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return &current, nil
 }
 
 func (se *mongoSessionStore) DeleteAccount(userID string, accountID string) error {

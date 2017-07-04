@@ -2,15 +2,16 @@ package api_test
 
 import (
 	"errors"
-	"github.com/golang/mock/gomock"
-	"github.com/gorilla/context"
-	"github.com/iliyanmotovski/bankv1/bank/api"
-	"github.com/iliyanmotovski/bankv1/bank/domain"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/golang/mock/gomock"
+	"github.com/gorilla/context"
+	"github.com/iliyanmotovski/bankv1/bank/api"
+	"github.com/iliyanmotovski/bankv1/bank/domain"
 )
 
 func TestUserAccountIsDeleted(t *testing.T) {
@@ -179,7 +180,7 @@ func TestUserDepositsSuccessfully(t *testing.T) {
 	defer ctrl.Finish()
 	mockAccountStore := domain.NewMockAccountStore(ctrl)
 
-	mockAccountStore.EXPECT().Deposit(gomock.Any()).Return(nil)
+	mockAccountStore.EXPECT().Deposit(gomock.Any()).Return(&domain.Account{Amount: 20}, nil)
 
 	context.Set(r, "session", &domain.Session{})
 	api.UserAccountDeposit(mockAccountStore).ServeHTTP(w, r)
@@ -197,7 +198,7 @@ func TestIfThereIsAnErrorWhileDepositing(t *testing.T) {
 	defer ctrl.Finish()
 	mockAccountStore := domain.NewMockAccountStore(ctrl)
 
-	mockAccountStore.EXPECT().Deposit(gomock.Any()).Return(errors.New("persistence error while depositing"))
+	mockAccountStore.EXPECT().Deposit(gomock.Any()).Return(nil, errors.New("persistence error while depositing"))
 
 	context.Set(r, "session", &domain.Session{})
 	api.UserAccountDeposit(mockAccountStore).ServeHTTP(w, r)
