@@ -112,7 +112,7 @@ func (se *mongoSessionStore) InsertAccount(UserID string, a domain.Account) (str
 	return accountID, nil
 }
 
-func (se *mongoSessionStore) Withdraw(a domain.Account) error {
+func (se *mongoSessionStore) Withdraw(a domain.Account) (*domain.Account, error) {
 	session := se.Session.Clone()
 	defer session.Close()
 
@@ -120,25 +120,25 @@ func (se *mongoSessionStore) Withdraw(a domain.Account) error {
 
 	err := session.DB(se.DBName).C("accounts").Find(bson.M{"userid": a.UserID, "accountid": a.AccountID}).One(&current)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	if current.Amount < a.Amount {
-		return domain.ErrWithdrawMoreThanHave
+		return nil, domain.ErrWithdrawMoreThanHave
 	}
 	current.Amount = current.Amount - a.Amount
 
 	err = session.DB(se.DBName).C("accounts").Update(bson.M{"accountid": current.AccountID}, bson.M{"$set": bson.M{"amount": current.Amount}})
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	err = session.DB(se.DBName).C("history").Insert(&domain.History{AccountID: current.AccountID, UserID: a.UserID, TransactionType: "withdraw", Currency: current.Currency, Amount: a.Amount, Date: time.Now().Local()})
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return &current, nil
 }
 
 func (se *mongoSessionStore) Deposit(a domain.Account) (*domain.Account, error) {

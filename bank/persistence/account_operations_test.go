@@ -52,7 +52,7 @@ func TestItUpdatesAndDeletesAccountData(t *testing.T) {
 		t.Error(err.Error())
 	}
 
-	err = accountStore.Withdraw(testAccountWithdraw)
+	_, err = accountStore.Withdraw(testAccountWithdraw)
 	if err != nil {
 		t.Error(err.Error())
 	}

@@ -72,7 +72,7 @@ type AccountStore interface {
 	// Returns 2 types of errors:
 	// 1: if the requested amount is greater than the available in the Account
 	// 2: generic unexpected error
-	Withdraw(account Account) error
+	Withdraw(account Account) (*Account, error)
 
 	// DeleteAccount takes UserID and AccountID. It deletes the corresponding account from the persistence.
 	// Returns error if any.
