@@ -222,7 +222,7 @@ func TestUserWithdrawsSuccessfully(t *testing.T) {
 	defer ctrl.Finish()
 	mockAccountStore := domain.NewMockAccountStore(ctrl)
 
-	mockAccountStore.EXPECT().Withdraw(gomock.Any()).Return(nil)
+	mockAccountStore.EXPECT().Withdraw(gomock.Any()).Return(&domain.Account{}, nil)
 
 	context.Set(r, "session", &domain.Session{})
 	api.UserAccountWithdraw(mockAccountStore).ServeHTTP(w, r)
@@ -240,7 +240,7 @@ func TestIfUserTriesToWithdrawMoreThanAvailableInTheAccount(t *testing.T) {
 	defer ctrl.Finish()
 	mockAccountStore := domain.NewMockAccountStore(ctrl)
 
-	mockAccountStore.EXPECT().Withdraw(gomock.Any()).Return(domain.ErrWithdrawMoreThanHave)
+	mockAccountStore.EXPECT().Withdraw(gomock.Any()).Return(nil, domain.ErrWithdrawMoreThanHave)
 
 	context.Set(r, "session", &domain.Session{})
 	api.UserAccountWithdraw(mockAccountStore).ServeHTTP(w, r)
@@ -264,7 +264,7 @@ func TestIfThereIsAnErrorWhileWithdrawing(t *testing.T) {
 	defer ctrl.Finish()
 	mockAccountStore := domain.NewMockAccountStore(ctrl)
 
-	mockAccountStore.EXPECT().Withdraw(gomock.Any()).Return(errors.New("persistence error while withdrawing"))
+	mockAccountStore.EXPECT().Withdraw(gomock.Any()).Return(nil, errors.New("persistence error while withdrawing"))
 
 	context.Set(r, "session", &domain.Session{})
 	api.UserAccountWithdraw(mockAccountStore).ServeHTTP(w, r)

@@ -73,12 +73,12 @@ func UserAccountDeposit(accountStore domain.AccountStore) http.Handler {
 		json.NewDecoder(r.Body).Decode(&account)
 		account.UserID = session.UserID
 
-		newAccount, err := accountStore.Deposit(account)
+		updatedAccount, err := accountStore.Deposit(account)
 		if err != nil {
 			errorResponse(w, http.StatusInternalServerError, "User Account Deposit Failed", "error", "unexpected_error", err.Error())
 			return
 		}
-		json.NewEncoder(w).Encode(newAccount)
+		json.NewEncoder(w).Encode(updatedAccount)
 	})
 }
 
@@ -90,7 +90,7 @@ func UserAccountWithdraw(accountStore domain.AccountStore) http.Handler {
 		json.NewDecoder(r.Body).Decode(&account)
 		account.UserID = session.UserID
 
-		err := accountStore.Withdraw(account)
+		updatedAccount, err := accountStore.Withdraw(account)
 		if err != nil {
 			switch err {
 			case domain.ErrWithdrawMoreThanHave:
@@ -101,6 +101,7 @@ func UserAccountWithdraw(accountStore domain.AccountStore) http.Handler {
 				return
 			}
 		}
+		json.NewEncoder(w).Encode(updatedAccount)
 	})
 }
 

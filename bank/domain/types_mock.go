@@ -168,10 +168,11 @@ func (_mr *_MockAccountStoreRecorder) Deposit(arg0 interface{}) *gomock.Call {
 	return _mr.mock.ctrl.RecordCall(_mr.mock, "Deposit", arg0)
 }
 
-func (_m *MockAccountStore) Withdraw(account Account) error {
+func (_m *MockAccountStore) Withdraw(account Account) (*Account, error) {
 	ret := _m.ctrl.Call(_m, "Withdraw", account)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(*Account)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 func (_mr *_MockAccountStoreRecorder) Withdraw(arg0 interface{}) *gomock.Call {
