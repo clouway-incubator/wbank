@@ -73,11 +73,12 @@ func UserAccountDeposit(accountStore domain.AccountStore) http.Handler {
 		json.NewDecoder(r.Body).Decode(&account)
 		account.UserID = session.UserID
 
-		err := accountStore.Deposit(account)
+		newAccount, err := accountStore.Deposit(account)
 		if err != nil {
 			errorResponse(w, http.StatusInternalServerError, "User Account Deposit Failed", "error", "unexpected_error", err.Error())
 			return
 		}
+		json.NewEncoder(w).Encode(newAccount)
 	})
 }
 

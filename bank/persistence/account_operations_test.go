@@ -1,10 +1,11 @@
 package persistence_test
 
 import (
+	"testing"
+
 	"github.com/iliyanmotovski/bankv1/bank/domain"
 	"github.com/iliyanmotovski/bankv1/bank/persistence"
 	"github.com/iliyanmotovski/bankv1/bank/persistence/testdb"
-	"testing"
 )
 
 func TestItWritesAndReadsAccountData(t *testing.T) {
@@ -46,7 +47,7 @@ func TestItUpdatesAndDeletesAccountData(t *testing.T) {
 	testAccountWithdraw := domain.Account{AccountID: accountID, UserID: "1234", Currency: "testC", Amount: 2}
 	expected := domain.Account{UserID: "1234", AccountID: accountID, Currency: "testC", Amount: 13, Type: "VISA"}
 
-	err = accountStore.Deposit(testAccountDeposit)
+	_, err = accountStore.Deposit(testAccountDeposit)
 	if err != nil {
 		t.Error(err.Error())
 	}
