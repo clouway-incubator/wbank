@@ -1,4 +1,6 @@
-*.idea/
+.idea/
 *.iml
 *.txt
-*.bank/static/
+static/
+node_modules
+build
