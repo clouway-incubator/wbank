@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/context"
+	"github.com/gorilla/mux"
 	"github.com/iliyanmotovski/bankv1/bank/domain"
 )
 
@@ -15,6 +16,23 @@ func GetUserAccounts(accountStore domain.AccountStore) http.Handler {
 		result, err := accountStore.GetAccounts(session.UserID)
 		if err != nil {
 			errorResponse(w, http.StatusInternalServerError, "Fetch User Accounts Failed", "error", "unexpected_error", err.Error())
+			return
+		}
+
+		json.NewEncoder(w).Encode(result)
+	})
+}
+
+func GetAccountDetails(accountStore domain.AccountStore) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		session := context.Get(r, "session").(*domain.Session)
+		vars := mux.Vars(r)
+		accountID := vars["accountID"]
+
+		result, err := accountStore.GetAccountDetails(session.UserID, accountID)
+		//TODO(mgenov): distinguish error "not found" from persistence error
+		if err != nil {
+			errorResponse(w, http.StatusNotFound, "Fetch Account Details Failed", "error", "unexpected_error", err.Error())
 			return
 		}
 

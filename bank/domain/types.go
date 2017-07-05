@@ -60,6 +60,9 @@ type AccountStore interface {
 	// match the UserID. Returns an error if any.
 	GetAccounts(userID string) ([]*Account, error)
 
+	// GetAccountDetails gets the details of the account.
+	GetAccountDetails(userID string, accountID string) (*Account, error)
+
 	// Deposit takes an Account and deposits the incoming money amount from the request to the corresponding
 	// Account in the persistence. Contains the deposit logic. It also inserts history in the persistence that
 	// states a deposit was made, the deposited sum, the time, the UserID and AccountID.

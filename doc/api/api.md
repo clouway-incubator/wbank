@@ -148,3 +148,18 @@ Response:
 - else if logged in and authorized, but requests another users's Account History: 401 Unauthorized + JSON ErrorResponse {"Message":"Fetch User Account History Failed", "Resource":"account", "Field":"account_authorization", "Code":"unauthorized_to_see_this_account_history"}
 
 - else if unexpected server error: 500 Internal Server Error + JSON ErrorResponse {"Message":"Fetch User Account History Failed", "Resource":"error", "Field":"unexpected_error", "Code": THE ERROR BODY}
+
+-------------------------------------------------------------------------------------------------------------------------------
+HISTORY:
+
+/v1/users/me/accounts/:accountID - GET
+
+Expect:
+- User to be logged in
+
+Response:
+- if authorized and successful: 200 OK + JSON Session + JSON Account {"AccountID" string, "UserID" string, "Currency" string, "Amount" string, "Type" string}
+
+- else if unauthorized: 401 Unauthorized + JSON ErrorResponse {"Message":"Authorization Failed", "Resource":"account", "Field":"account_authorization", "Code":"unauthorized"}
+
+- else if logged in and authorized, but requests another users's Account Details: 404 Unauthorized + JSON ErrorResponse {"Message":"Fetch Account Details Failed", "Resource":"account", "Field":"error", "Code":"fetch_account_details_error"}
