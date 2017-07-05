@@ -79,18 +79,18 @@ func (se *mongoSessionStore) GetHistory(historyRequest domain.History) (*[]domai
 	return &result, nil
 }
 
-func (se *mongoSessionStore) GetAccounts(userID string) (*[]domain.Account, error) {
+func (se *mongoSessionStore) GetAccounts(userID string) ([]*domain.Account, error) {
 	session := se.Session.Clone()
 	defer session.Close()
 
-	var result []domain.Account
+	var result []*domain.Account
 
 	err := session.DB(se.DBName).C("accounts").Find(bson.M{"userid": userID}).All(&result)
 	if err != nil {
 		return nil, err
 	}
 
-	return &result, nil
+	return result, nil
 }
 
 func (se *mongoSessionStore) InsertAccount(UserID string, a domain.Account) (string, error) {

@@ -1,6 +1,7 @@
 package persistence_test
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/iliyanmotovski/bankv1/bank/domain"
@@ -14,22 +15,38 @@ func TestItWritesAndReadsAccountData(t *testing.T) {
 
 	accountStore := persistence.NewAccountStore(*db.Database.Session, db.Database.Name)
 
-	testAccount := domain.Account{UserID: "1234", Currency: "testC", Amount: 10, Type: "VISA"}
+	testAccount := &domain.Account{UserID: "1234", Currency: "testC", Amount: 10, Type: "VISA"}
 
-	accountID, err := accountStore.InsertAccount(testAccount.UserID, testAccount)
+	accountID, err := accountStore.InsertAccount(testAccount.UserID, *testAccount)
 	if err != nil {
 		t.Error(err.Error())
 	}
+
 	testAccount.AccountID = accountID
 
-	a, err := accountStore.GetAccounts(testAccount.UserID)
+	accounts, err := accountStore.GetAccounts(testAccount.UserID)
 	if err != nil {
 		t.Error(err.Error())
 	}
-	account := *a
 
-	if account[0] != testAccount {
-		t.Errorf("expected account: %v got: %v", testAccount, account[0])
+	if !reflect.DeepEqual(accounts[0], testAccount) {
+		t.Errorf("expected account: %v got: %v", testAccount, accounts[0])
+	}
+}
+
+func TestWhenThereAreNoAccounts(t *testing.T) {
+	db := testdb.NewDatabase()
+	defer db.Close()
+
+	accountStore := persistence.NewAccountStore(*db.Database.Session, db.Database.Name)
+
+	accounts, err := accountStore.GetAccounts("123")
+	if err != nil {
+		t.Error(err.Error())
+	}
+
+	if len(accounts) != 0 {
+		t.Errorf("expected zero accounts but got: %v", len(accounts))
 	}
 }
 
@@ -45,7 +62,7 @@ func TestItUpdatesAndDeletesAccountData(t *testing.T) {
 
 	testAccountDeposit := domain.Account{AccountID: accountID, UserID: "1234", Currency: "testC", Amount: 5}
 	testAccountWithdraw := domain.Account{AccountID: accountID, UserID: "1234", Currency: "testC", Amount: 2}
-	expected := domain.Account{UserID: "1234", AccountID: accountID, Currency: "testC", Amount: 13, Type: "VISA"}
+	expected := &domain.Account{UserID: "1234", AccountID: accountID, Currency: "testC", Amount: 13, Type: "VISA"}
 
 	_, err = accountStore.Deposit(testAccountDeposit)
 	if err != nil {
@@ -57,14 +74,12 @@ func TestItUpdatesAndDeletesAccountData(t *testing.T) {
 		t.Error(err.Error())
 	}
 
-	a, err := accountStore.GetAccounts(expected.UserID)
+	accounts, err := accountStore.GetAccounts(expected.UserID)
 	if err != nil {
 		t.Error(err.Error())
 	}
-	account := *a
-
-	if account[0] != expected {
-		t.Errorf("expected account: %v got: %v", expected, account[0])
+	if !reflect.DeepEqual(accounts[0], expected) {
+		t.Errorf("expected account: %v got: %v", expected, accounts[0])
 	}
 
 	err = accountStore.DeleteAccount("1234", accountID)
@@ -72,13 +87,12 @@ func TestItUpdatesAndDeletesAccountData(t *testing.T) {
 		t.Error(err.Error())
 	}
 
-	a, err = accountStore.GetAccounts(expected.UserID)
+	a, err := accountStore.GetAccounts(expected.UserID)
 	if err != nil {
 		t.Error(err.Error())
 	}
-	account = *a
 
-	if len(account) != 0 {
+	if len(a) != 0 {
 		t.Error("expected to have 0 accounts in the DB, but there was more")
 	}
 }
