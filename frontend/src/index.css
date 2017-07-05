@@ -1,0 +1,148 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial;
+}
+
+div {
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.jumbotron > h1, h2 {
+  margin-bottom: 50px;
+}
+
+.table th, tr {
+  text-align: center;
+}
+
+.btn {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.div--back-button {
+  margin-top: 30px;
+}
+
+/* CREATE NEW ACCOUNT POPUP*/
+.div--create-new-account {
+  margin: 20px;
+}
+
+.form--select-currency {
+  height: 40px;
+  width: auto;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.form--input-amount {
+  height: 40px;
+  width: 80px;
+  font-size: 1.2em;
+  text-align: center;
+}
+
+.form--submit-button {
+  height: 40px;
+  width: auto;
+  border: 0px;
+  border: 1px solid gray;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+/* CREATE NEW ACCOUNT POPUP*/
+
+/* STATUSBAR*/
+.div--status-bar {
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  height: 24px;
+}
+
+.span--status-bar {
+  visibility: visible;
+  padding: 3px;
+  margin: 0;
+  height: 100%;
+  text-align: center;
+  color: #3d3d3d;
+  background-color: lightgoldenrodyellow;
+}
+/* STATUSBAR*/
+
+/* LOGIN/REGISTER FORMS */
+.span--form-error {
+  font-weight: bold;
+  color: white;
+  background-color: red;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border-radius: 5px;
+}
+
+.span--form-warn {
+  color: black;
+  background-color: yellow;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border-radius: 5px;
+}
+
+.input--form-auth {
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 10px;
+  border: 1px solid silver;
+  border-radius: 5px;
+  font-size: 2em;
+  text-align: center;
+  width: 230px;
+}
+
+.input--form-register {
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 5px;
+  border: 1px solid silver;
+  border-radius: 5px;
+  font-size: 1.5em;
+  text-align: center;
+  width: 324px;
+}
+
+.button--form-page {
+  margin-top: 10px;
+}
+
+.footer--form-page {
+  margin-top: 10px;
+}
+/* LOGIN/REGISTER FORMS */
+
+/* NAVBAR */
+.navbar--main {
+  margin-top: 24px;
+}
+
+.link--navbar-item {
+  letter-spacing: 2px;
+  color: gray;
+}
+
+.link--navbar-item:hover {
+  color: orange;
+}
+
+.link--navbar-item:active {
+  color: gray;
+}
+/* NAVBAR */

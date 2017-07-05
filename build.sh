@@ -2,4 +2,4 @@
 
 cd frontend
 npm run build
-cp build/* ../cmd/bankapp/static -rf
+cp -fr build ../cmd/bankapp/static
