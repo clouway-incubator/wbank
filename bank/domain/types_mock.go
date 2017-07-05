@@ -146,9 +146,9 @@ func (_mr *_MockAccountStoreRecorder) InsertAccount(arg0, arg1 interface{}) *gom
 	return _mr.mock.ctrl.RecordCall(_mr.mock, "InsertAccount", arg0, arg1)
 }
 
-func (_m *MockAccountStore) GetAccounts(userID string) (*[]Account, error) {
+func (_m *MockAccountStore) GetAccounts(userID string) ([]*Account, error) {
 	ret := _m.ctrl.Call(_m, "GetAccounts", userID)
-	ret0, _ := ret[0].(*[]Account)
+	ret0, _ := ret[0].([]*Account)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

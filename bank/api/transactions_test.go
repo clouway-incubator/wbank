@@ -86,11 +86,11 @@ func TestUserRequestsHisAccountsAndThereAreNoErrors(t *testing.T) {
 	defer ctrl.Finish()
 	mockAccountStore := domain.NewMockAccountStore(ctrl)
 
-	account := []domain.Account{}
-	account = append(account, domain.Account{UserID: "12345", AccountID: "54321", Currency: "BGN", Amount: 100, Type: "VISA"})
-	account = append(account, domain.Account{UserID: "54321", AccountID: "12345", Currency: "NGB", Amount: 200, Type: "AMERICAN"})
+	account := []*domain.Account{}
+	account = append(account, &domain.Account{UserID: "12345", AccountID: "54321", Currency: "BGN", Amount: 100, Type: "VISA"})
+	account = append(account, &domain.Account{UserID: "54321", AccountID: "12345", Currency: "NGB", Amount: 200, Type: "AMERICAN"})
 
-	mockAccountStore.EXPECT().GetAccounts(gomock.Any()).Return(&account, nil)
+	mockAccountStore.EXPECT().GetAccounts(gomock.Any()).Return(account, nil)
 
 	context.Set(r, "session", &domain.Session{})
 	api.GetUserAccounts(mockAccountStore).ServeHTTP(w, r)
