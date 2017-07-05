@@ -83,7 +83,7 @@ func (se *mongoSessionStore) GetAccounts(userID string) ([]*domain.Account, erro
 	session := se.Session.Clone()
 	defer session.Close()
 
-	var result []*domain.Account
+	result := make([]*domain.Account, 0)
 
 	err := session.DB(se.DBName).C("accounts").Find(bson.M{"userid": userID}).All(&result)
 	if err != nil {
