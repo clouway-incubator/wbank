@@ -157,6 +157,17 @@ func (_mr *_MockAccountStoreRecorder) GetAccounts(arg0 interface{}) *gomock.Call
 	return _mr.mock.ctrl.RecordCall(_mr.mock, "GetAccounts", arg0)
 }
 
+func (_m *MockAccountStore) GetAccountDetails(userID string, accountID string) (*Account, error) {
+	ret := _m.ctrl.Call(_m, "GetAccountDetails", userID, accountID)
+	ret0, _ := ret[0].(*Account)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+func (_mr *_MockAccountStoreRecorder) GetAccountDetails(arg0, arg1 interface{}) *gomock.Call {
+	return _mr.mock.ctrl.RecordCall(_mr.mock, "GetAccountDetails", arg0, arg1)
+}
+
 func (_m *MockAccountStore) Deposit(account Account) (*Account, error) {
 	ret := _m.ctrl.Call(_m, "Deposit", account)
 	ret0, _ := ret[0].(*Account)

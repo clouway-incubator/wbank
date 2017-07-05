@@ -93,6 +93,22 @@ func (se *mongoSessionStore) GetAccounts(userID string) ([]*domain.Account, erro
 	return result, nil
 }
 
+func (se *mongoSessionStore) GetAccountDetails(userID string, accountID string) (*domain.Account, error) {
+
+	session := se.Session.Clone()
+	defer session.Close()
+
+	account := new(domain.Account)
+
+	err := session.DB(se.DBName).C("accounts").Find(bson.M{"userid": userID, "accountid": accountID}).One(&account)
+	if err != nil {
+		return nil, err
+	}
+
+	return account, nil
+
+}
+
 func (se *mongoSessionStore) InsertAccount(UserID string, a domain.Account) (string, error) {
 	session := se.Session.Clone()
 	defer session.Close()

@@ -48,6 +48,7 @@ func main() {
 	s.Handle("/login", SignUpHandlers.Then(api.LoginHandler(userStore, sessionStore, userSessionDuration))).Methods("POST")
 	s.Handle("/logout", SignUpHandlers.Then(api.LogoutHandler(sessionStore))).Methods("POST")
 	s.Handle("/me/new-account", SecurityHandlers.Then(api.NewUserAccount(accountStore))).Methods("POST")
+	s.Handle("/me/accounts/{accountID}", SecurityHandlers.Then(api.GetAccountDetails(accountStore))).Methods("GET")
 	s.Handle("/me/accounts", SecurityHandlers.Then(api.GetUserAccounts(accountStore))).Methods("GET")
 	s.Handle("/me/delete-account", SecurityHandlers.Then(api.DeleteUserAccount(accountStore))).Methods("DELETE")
 	s.Handle("/me/deposit", SecurityHandlers.Then(api.UserAccountDeposit(accountStore))).Methods("POST")
