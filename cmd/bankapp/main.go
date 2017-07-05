@@ -44,7 +44,6 @@ func main() {
 	SignUpHandlers := alice.New(api.LoggingMiddleware, api.RecoverMiddleware)
 	SecurityHandlers := alice.New(api.LoggingMiddleware, api.RecoverMiddleware, api.CookieBasedSecurity(sessionStore, userSessionDuration))
 
-	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 	s.Handle("/signup", SignUpHandlers.Then(api.SignUpHandler(userStore))).Methods("POST")
 	s.Handle("/login", SignUpHandlers.Then(api.LoginHandler(userStore, sessionStore, userSessionDuration))).Methods("POST")
 	s.Handle("/logout", SignUpHandlers.Then(api.LogoutHandler(sessionStore))).Methods("POST")
@@ -55,5 +54,16 @@ func main() {
 	s.Handle("/me/withdraw", SecurityHandlers.Then(api.UserAccountWithdraw(accountStore))).Methods("POST")
 	s.Handle("/me/account-history", SecurityHandlers.Then(api.UserTransactionHistory(accountStore))).Methods("POST")
 
+	r.PathPrefix("/static").Handler(http.FileServer(http.Dir("./static")))
+	r.PathPrefix("/").HandlerFunc(IndexHandler("./static/index.html"))
+
 	http.ListenAndServe(":8080", r)
+}
+
+func IndexHandler(entrypoint string) func(w http.ResponseWriter, r *http.Request) {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, entrypoint)
+	}
+
+	return http.HandlerFunc(fn)
 }
