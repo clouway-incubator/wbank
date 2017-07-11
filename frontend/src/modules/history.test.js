@@ -1,11 +1,12 @@
 // History Reducer
+
 import reducer from './history'
 
-// Tests
-test('should attach account history to state after loaded', () => {
-    const state = []
+describe('history reducer', () => {
+    it('should attach account history to state after loaded', () => {
+        const state = []
 
-    expect(reducer(state, action('LOAD_ACCOUNT_HISTORY_SUCCESS', [{
+        expect(reducer(state, action('LOAD_ACCOUNT_HISTORY_SUCCESS', [{
             AccountID: 'YB1PM',
             TransactionType: 'deposit',
             Currency: 'USD',
@@ -17,7 +18,7 @@ test('should attach account history to state after loaded', () => {
             Currency: 'USD',
             Amount: 2000,
         }])))
-        .toEqual(
+            .toEqual(
             [{
                 AccountID: 'YB1PM',
                 TransactionType: 'deposit',
@@ -30,9 +31,11 @@ test('should attach account history to state after loaded', () => {
                 Currency: 'USD',
                 Amount: 2000,
             }]
-        )
-})
+            )
+    })
 
-const action = (name, data) => {
-    return {type: name, payload: {data: data}}
-}
+    const action = (name, data) => {
+        return { type: name, payload: { data: data } }
+    }
+    
+})
