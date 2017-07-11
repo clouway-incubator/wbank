@@ -1,21 +1,21 @@
-import React from 'react';
+import React from 'react'
 import renderer from 'react-test-renderer'
-import { shallow, mount, render } from 'enzyme';
+import { shallow, mount, render } from 'enzyme'
 import AccountDetailsPage from './AccountDetailsPage'
 
 describe('AccountDetailsPage', () => {
-  let page;
-  let deleteAccount;
-  let loadAccountDetails;
-  let Link;
+  let page
+  let deleteAccount
+  let loadAccountDetails
+  let Link
  
-  
   beforeEach(() => {
-    deleteAccount = jest.fn();    
-    loadAccountDetails = jest.fn(); 
-  });
+    deleteAccount = jest.fn()  
+    loadAccountDetails = jest.fn()
+  })
 
-  it('renders the account details properly', () => {        
+  it('renders the account details properly', () => {   
+    const history = { push: jest.fn() }     
     const tree = renderer.create(
       <AccountDetailsPage 
         match={{params: { id: '123' }}}
@@ -26,7 +26,7 @@ describe('AccountDetailsPage', () => {
       />
     ).toJSON()
     expect(tree).toMatchSnapshot()
-  });
+  })
 
 
   it('renders with props', () => {
@@ -36,9 +36,9 @@ describe('AccountDetailsPage', () => {
         loadAccountDetails={loadAccountDetails}
         loading={false}
       />
-    );
-    expect(page).toBeDefined();
-  });
+    )
+    expect(page).toBeDefined()
+  })
 
 
   it('renders loading message when account details begin loading', () => {
@@ -51,7 +51,7 @@ describe('AccountDetailsPage', () => {
       />
     ).toJSON()
     expect(tree).toMatchSnapshot()
-  });
+  })
 
   it('renders bad account details message when account details cannot be loaded', () => {        
     const tree = renderer.create(
@@ -64,7 +64,7 @@ describe('AccountDetailsPage', () => {
       />
     ).toJSON()
     expect(tree).toMatchSnapshot()
-  });
+  })
 
   it('redirects to accounts page when account is deleted successfully', (done) => {
     const promise = {then: resolve => resolve()}
@@ -93,7 +93,7 @@ describe('AccountDetailsPage', () => {
             done.fail(e)
         }
     }, 0)    
-  });
+  })
 
   it('goes to account transaction page when user clicks on the account history button', () => {
     const history = { push: jest.fn() }
@@ -109,6 +109,6 @@ describe('AccountDetailsPage', () => {
     const button = page.find('button').at(3)
     button.simulate('click')
     expect(history.push).toBeCalledWith('/transactions/123')
-  });
+  })
 
-});
+})
