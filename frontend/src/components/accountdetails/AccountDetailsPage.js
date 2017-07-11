@@ -1,5 +1,4 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
 import AccountDetailsTable from './AccountDetailsTable'
 
 export default class AccountDetailsPage extends React.Component {
@@ -10,6 +9,7 @@ export default class AccountDetailsPage extends React.Component {
     this.onDeposit = this.onDeposit.bind(this)
     this.onWithdraw = this.onWithdraw.bind(this)
     this.onAccountHistory = this.onAccountHistory.bind(this)
+    this.onBack = this.onBack.bind(this)
   }
 
   componentDidMount() {    
@@ -35,10 +35,8 @@ export default class AccountDetailsPage extends React.Component {
         <button className="btn btn-default btn-md" onClick={this.onWithdraw}>Withdraw</button>     
         <button className="btn btn-default btn-md" onClick={this.onDeleteAccount}>Delete</button>
         <button className="btn btn-default btn-md" onClick={this.onAccountHistory}>Transactions History</button>
-        <div className='div--back-button'>
-          <Link to='/accounts'>
-            <button className="btn btn-default btn-md">Back</button>
-          </Link>
+        <div className='div--back-button'>  
+          <button className="btn btn-default btn-md" onClick={this.onBack}>Back</button>
         </div>
       </div>
     )
@@ -72,6 +70,10 @@ export default class AccountDetailsPage extends React.Component {
       this.props.withdrawAccount(this.props.match.params.id, parseFloat(promptInput))
       : 
       this.props.showStatusMessage(`Invalid amount. Please, type a valid number to withdraw.`)
+  }
+
+  onBack() {
+    this.props.history.push('/accounts')
   }
 
   isNumber(n) {
