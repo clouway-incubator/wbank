@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AccountDetailsPage renders bad account details message when account details cannot be loaded 1`] = `
+<p>
+  Bad Account ID. Please go back.
+</p>
+`;
+
+exports[`AccountDetailsPage renders loading message when account details begin loading 1`] = `
+<div>
+  Loading...
+</div>
+`;
+
+exports[`AccountDetailsPage renders the account details properly 1`] = `
+<div
+  className="jumbotron"
+>
+  <h2>
+    Account Details
+  </h2>
+  <table
+    className="table"
+  >
+    <thead>
+      <tr>
+        <th>
+          Account ID
+        </th>
+        <th>
+          Currency
+        </th>
+        <th>
+          Balance
+        </th>
+        <th>
+          Type
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          123
+        </td>
+        <td>
+          USD
+        </td>
+        <td>
+          1000
+        </td>
+        <td>
+          Credit
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button
+    className="btn btn-default btn-md"
+    onClick={[Function]}
+  >
+    Deposit
+  </button>
+  <button
+    className="btn btn-default btn-md"
+    onClick={[Function]}
+  >
+    Withdraw
+  </button>
+  <button
+    className="btn btn-default btn-md"
+    onClick={[Function]}
+  >
+    Delete
+  </button>
+  <button
+    className="btn btn-default btn-md"
+    onClick={[Function]}
+  >
+    Transactions History
+  </button>
+  <div
+    className="div--back-button"
+  >
+    <button
+      className="btn btn-default btn-md"
+      onClick={[Function]}
+    >
+      Back
+    </button>
+  </div>
+</div>
+`;
